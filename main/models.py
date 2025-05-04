@@ -1,6 +1,7 @@
 from django.db import models
+from django.urls  import reverse
 
-# Create your models here.
+
 class Category(models.Model):
     name =  models.CharField(max_length=100, db_tablespace=True)
     slug =  models.SlugField(max_length=100,  unique=True)
@@ -9,8 +10,14 @@ class Category(models.Model):
         ordering =  ('name', )
         verbose_name  = 'Категория'
         verbose_name_plural =  'Категория'
+        
     def __str__(self):
         return self.name
+    
+    def get_absolute_self(self):
+        return reverse("main:product_list_buy_category", args=[self.slug])
+    
+    
     
 class Product(models.Model):
     category =  models.ForeignKey(Category,related_name='products',
@@ -31,3 +38,5 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_irl(self):
+        return reverse("main:product_datail", args=[self.id, self.slug])    
